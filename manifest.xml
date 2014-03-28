@@ -1,0 +1,16 @@
+<package>
+  <description brief="uos_3dscanner">
+
+     uos_3dscanner
+
+  </description>
+  <author>bekisliuk</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/uos_3dscanner</url>
+  <depend package="roscpp"/>
+  <depend package="pololu_driver"/>
+
+</package>
+
+
