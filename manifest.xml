@@ -10,6 +10,8 @@
   <url>http://ros.org/wiki/uos_3dscanner</url>
   <depend package="roscpp"/>
   <depend package="pololu_driver"/>
+  <depend package="kurt_bringup"/>
+  <depend package="uos_common_urdf"/>
 
 </package>
 
