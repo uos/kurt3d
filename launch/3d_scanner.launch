@@ -3,7 +3,18 @@
   <param name="robot_description" command="cat '$(find uos_3dscanner)/urdf/3d_scanner.urdf'" />
 
   <node pkg="robot_state_publisher" type="state_publisher" name="state_publisher" />
+  <node pkg="uos_3dscanner" type="laserscanner_node" name="laserscanner_node" />
+  <node pkg="pololu_driver" type="servo_node" name="servo_node" />
+
+
 
   <include file="$(find kurt_bringup)/launch/sick_lms200.launch" />
+
+
+  <node type="laser_scan_assembler" pkg="laser_assembler" name="scan_assembler">
+
+    <param name="max_scans" type="int" value="1000" />
+    <param name="fixed_frame" type="string" value="base_link" />
+   </node>
 
 </launch>

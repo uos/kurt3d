@@ -1,7 +1,8 @@
 #include "ros/ros.h"
 #include "pololu_driver/Servo_Command.h"
 #include "uos_3dscanner/Scan.h"
-#include "std_msgs/String.h"
+#include "sensor_msgs/LaserScan.h"
+#include "laser_assembler/AssembleScans2.h"
 #include <cstdlib>
 #define _USE_MATH_DEFINES
 
@@ -11,11 +12,8 @@
 #define MAX_POS ((60.0 * (float)M_PI) / 180.0)
 
 static ros::ServiceClient client;
-
-void servoCallback(const std_msgs::String::ConstPtr& msg)
-{
-  ROS_INFO("Scan: [%s]", msg->data.c_str());
-}
+static ros::ServiceClient pointCloudClient;
+static ros::Publisher state_pub;
 
 bool scan(uos_3dscanner::Scan::Request  &req,
          uos_3dscanner::Scan::Response &res)
@@ -25,7 +23,7 @@ bool scan(uos_3dscanner::Scan::Request  &req,
 
     srv.request.channel = 0;
     srv.request.angle = MIN_POS;
-    srv.request.speed = 10;
+    srv.request.speed = 15;
 
     if (client.call(srv))
     {
@@ -33,10 +31,12 @@ bool scan(uos_3dscanner::Scan::Request  &req,
     }
     else
     {
-      ROS_ERROR("Failed to call service servo nodding");
+      ROS_ERROR("Failed to call service servo_command");
       return 1;
     }
 
+    laser_assembler::AssembleScans2 assemble_srv;
+    assemble_srv.request.begin = ros::Time::now();
 
     for(int i = 0; i < 1000; i++)
     {
@@ -68,6 +68,21 @@ bool scan(uos_3dscanner::Scan::Request  &req,
 
 
 
+    assemble_srv.request.end = ros::Time::now();
+
+    if (pointCloudClient.call(assemble_srv))
+    {
+        ROS_INFO("Scan assembled");
+
+        state_pub.publish(assemble_srv.response.cloud);
+    }
+    else
+    {
+      ROS_ERROR("Failed to call service assemble_scans");
+      return 1;
+    }
+
+
     srv.request.channel = 0;
     srv.request.angle = STANDBY_POS;
     srv.request.speed = 10;
@@ -97,8 +112,11 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
 
   client = n.serviceClient<pololu_driver::Servo_Command>("servo_node");
+  pointCloudClient = n.serviceClient<laser_assembler::AssembleScans2>("assemble_scans2");
 
-  ros::Subscriber sub = n.subscribe("servo_state", 1, servoCallback);
+  // inits the publisher
+  state_pub = n.advertise<sensor_msgs::PointCloud2>("uos_3dscans", 1);
+
 
   // inits the service
   ros::ServiceServer service = n.advertiseService("laserscanner_node", scan);

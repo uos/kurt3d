@@ -9,6 +9,7 @@
         <color rgba="0.7 0.7 0.7 1" />
       </material>
     </visual>
+
     <collision>
       <geometry>
 	<box size="0.22 0.15 0.01" />
@@ -32,11 +33,12 @@
       </geometry>
     </collision>
   </link>
+
+
   <joint name="balken_1_to_sockel" type="fixed">
     <parent link="base_link" />
     <child link="balken_1" />
     <origin xyz="-0.095 -0.013 0.0825" />
-
   </joint>
 
 <!-- balken2 -->
@@ -72,6 +74,7 @@
       </material>
     </visual>
   </link>
+
   <joint name="drehobjekt_1_to_balken_1" type="continuous">
     <parent link="balken_1" />
     <child link="drehobjekt_1" />
@@ -106,11 +109,14 @@
       </material>
     </visual>
   </link>
+
   <joint name="drehobjekt_2_to_drehobjekt_1" type="fixed">
     <parent link="drehobjekt_1" />
     <child link="drehobjekt_2" />
     <origin xyz="0.168 0 0" />
   </joint>
+
+
   <link name="erweiterung_2">
     <visual>
       <geometry>
@@ -128,7 +134,7 @@
   </joint>
 
 <!-- laser einheit -->
-  <link name="laser360">
+  <link name="laser">
     <visual>
       <geometry>
 	<mesh filename="package://uos_common_urdf/meshes/sick_lms-200.stl" />
@@ -145,7 +151,7 @@
   </link>
   <joint name="laser_to_halterung" type="fixed">
     <parent link="erweiterung_1" />
-    <child link="laser360" />
+    <child link="laser" />
     <origin rpy="0 -1.57079632679 -1.57079632679" xyz="0.084 -0.027 0.067" />
   </joint>
 
