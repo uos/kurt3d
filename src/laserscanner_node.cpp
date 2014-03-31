@@ -3,11 +3,12 @@
 #include "uos_3dscanner/Scan.h"
 #include "std_msgs/String.h"
 #include <cstdlib>
+#define _USE_MATH_DEFINES
 
 
-#define MIN_POS -50.0
-#define STANDBY_POS 5.0
-#define MAX_POS 60.0
+#define MIN_POS ((-50.0 * (float)M_PI) / 180.0)
+#define STANDBY_POS ((-20.0 * (float)M_PI) / 180.0)
+#define MAX_POS ((60.0 * (float)M_PI) / 180.0)
 
 static ros::ServiceClient client;
 
@@ -23,7 +24,7 @@ bool scan(uos_3dscanner::Scan::Request  &req,
     pololu_driver::Servo_Command srv;
 
     srv.request.channel = 0;
-    srv.request.angle = 0;
+    srv.request.angle = MIN_POS;
     srv.request.speed = 10;
 
     if (client.call(srv))
@@ -42,7 +43,10 @@ bool scan(uos_3dscanner::Scan::Request  &req,
         pololu_driver::Servo_Command srv;
         float angle;
 
-        angle = (((MAX_POS-MIN_POS)/1000.0)*(float)i);
+        angle = MIN_POS+ (float)i/1000.0 * (MAX_POS-MIN_POS);
+
+        ROS_INFO("angle: [%f]",angle);
+
         std::cout << "Angle: " << angle << std::endl;
 
         srv.request.channel = 0;
