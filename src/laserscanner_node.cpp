@@ -10,10 +10,25 @@
 #define MIN_POS ((-50.0 * (float)M_PI) / 180.0)
 #define STANDBY_POS ((-20.0 * (float)M_PI) / 180.0)
 #define MAX_POS ((60.0 * (float)M_PI) / 180.0)
+#define RANGE 1000
 
 static ros::ServiceClient client;
 static ros::ServiceClient pointCloudClient;
+
 static ros::Publisher state_pub;
+static ros::Publisher laser_pub;
+
+static sensor_msgs::LaserScan lastPublishedScan;
+
+static sensor_msgs::LaserScan currentScan;
+static sensor_msgs::LaserScan lastScan;
+
+void scanCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
+{
+  lastScan = currentScan;
+  currentScan = *msg;
+}
+
 
 bool scan(uos_3dscanner::Scan::Request  &req,
          uos_3dscanner::Scan::Response &res)
@@ -38,12 +53,12 @@ bool scan(uos_3dscanner::Scan::Request  &req,
     laser_assembler::AssembleScans2 assemble_srv;
     assemble_srv.request.begin = ros::Time::now();
 
-    for(int i = 0; i < 1000; i++)
+    for(int i = 0; i < RANGE; i++)
     {
         pololu_driver::Servo_Command srv;
         float angle;
 
-        angle = MIN_POS+ (float)i/1000.0 * (MAX_POS-MIN_POS);
+        angle = MIN_POS+ (float)i/ (float)RANGE * (MAX_POS-MIN_POS);
 
         ROS_INFO("angle: [%f]",angle);
 
@@ -51,11 +66,22 @@ bool scan(uos_3dscanner::Scan::Request  &req,
 
         srv.request.channel = 0;
         srv.request.angle = (angle);
-        srv.request.speed = 0;
+        srv.request.speed = 5;
 
         if (client.call(srv))
         {
           ROS_INFO("Movement finished");
+
+          while(lastPublishedScan.header.seq == currentScan.header.seq || lastPublishedScan.header.seq == lastScan.header.seq)
+          {
+              ros::spinOnce();
+          }
+
+          laser_pub.publish(lastScan);
+          std::cout << "" << lastScan.header.seq << std::endl;
+          laser_pub.publish(currentScan);
+          std::cout << currentScan.header.seq << std::endl;
+          lastPublishedScan = currentScan;
         }
         else
         {
@@ -116,6 +142,12 @@ int main(int argc, char **argv)
 
   // inits the publisher
   state_pub = n.advertise<sensor_msgs::PointCloud2>("uos_3dscans", 1);
+
+  // inits the publisher
+  laser_pub = n.advertise<sensor_msgs::LaserScan>("cleaned_scan", 100);
+
+  // inits the subscriber
+  ros::Subscriber sub = n.subscribe("scan", 100, scanCallback);
 
 
   // inits the service

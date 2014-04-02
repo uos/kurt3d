@@ -11,9 +11,9 @@
   <include file="$(find kurt_bringup)/launch/sick_lms200.launch" />
 
 
-  <node type="laser_scan_assembler" pkg="laser_assembler" name="scan_assembler">
-
-    <param name="max_scans" type="int" value="1000" />
+    <node type="laser_scan_assembler" pkg="laser_assembler" name="scan_assembler">
+    <remap from="scan" to="cleaned_scan" />
+    <param name="max_scans" type="int" value="5000" />
     <param name="fixed_frame" type="string" value="base_link" />
    </node>
 
