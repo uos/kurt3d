@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<robot
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <link name="laser_sockel">
+    <visual>
+      <geometry>
+        <box size="0.22 0.15 0.01" />
+      </geometry>
+      <material name="grey">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="0.22 0.15 0.01" />
+      </geometry>
+    </collision>
+  </link>
+
+<!-- balken1 -->
+  <link name="balken_1">
+    <visual>
+      <geometry>
+        <box size="0.01 0.04 0.155" />
+      </geometry>
+      <material name="grey">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.01 0.04 0.155" />
+      </geometry>
+    </collision>
+  </link>
+
+
+  <joint name="balken_1_to_sockel" type="fixed">
+  <parent link="laser_sockel" />
+    <child link="balken_1" />
+    <origin xyz="-0.095 -0.013 0.0825" />
+  </joint>
+
+<!-- balken2 -->
+  <link name="balken_2">
+    <visual>
+      <geometry>
+        <box size="0.01 0.04 0.155" />
+      </geometry>
+      <material name="grey">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.01 0.04 0.155" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="balken_2_to_sockel" type="fixed">
+    <parent link="laser_sockel" />
+    <child link="balken_2" />
+    <origin xyz="0.095 -0.013 0.0825" />
+  </joint>
+
+<!-- drehung1 -->
+  <link name="drehobjekt_1">
+    <visual>
+      <geometry>
+        <box size="0.01 0.02 0.02"/>
+      </geometry>
+      <material name="grey">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="drehobjekt_1_to_balken_1" type="continuous">
+    <parent link="balken_1" />
+    <child link="drehobjekt_1" />
+    <axis xyz="1 0 0" />
+    <origin xyz="0.011 0 0.065" />
+  </joint>
+
+  <link name="erweiterung_1">
+    <visual>
+      <geometry>
+        <box size="0.01 0.12 0.046" />
+      </geometry>
+      <material name="grey">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="erweiterung_1_to_drehobjekt_1" type="fixed">
+    <parent link="drehobjekt_1" />
+    <child link="erweiterung_1" />
+    <origin rpy="1.57079632679 0 0" xyz="0 0.033 0" />
+  </joint>
+
+<!-- drehung2 -->
+  <link name="drehobjekt_2">
+    <visual>
+      <geometry>
+        <box size="0.01 0.02 0.02" />
+      </geometry>
+      <material name="grey">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="drehobjekt_2_to_drehobjekt_1" type="fixed">
+    <parent link="drehobjekt_1" />
+    <child link="drehobjekt_2" />
+    <origin xyz="0.168 0 0" />
+  </joint>
+
+
+  <link name="erweiterung_2">
+    <visual>
+      <geometry>
+        <box size="0.01 0.12 0.046" />
+      </geometry>
+      <material name="grey">
+        <color rgba="0.7 0.7 0.7 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="erweiterung_2_to_drehobjekt_2" type="fixed">
+    <parent link="drehobjekt_2" />
+    <child link="erweiterung_2" />
+    <origin rpy="1.57079632679 0 0" xyz="0 0.033 0" />
+  </joint>
+
+<!-- laser einheit -->
+  <link name="laser">
+    <visual>
+      <geometry>
+        <mesh filename="package://uos_common_urdf/meshes/sick_lms-200.stl" />
+      </geometry>
+      <material name="blue">
+        <color rgba="0.118 0.565 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://uos_common_urdf/meshes/sick_lms-200.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="laser_to_halterung" type="fixed">
+    <parent link="erweiterung_1" />
+    <child link="laser" />
+    <origin rpy="0 -1.57079632679 -1.57079632679" xyz="0.084 -0.027 0.067" />
+  </joint>
+
+<!--   TOP TO BASE -->
+
+
+<joint name="base_to_top" type="fixed">
+    <parent link="base_link" />
+    <child link="laser_sockel" />
+    <origin xyz="0.14 0 0.035" rpy="0 0 1.57079632679" />
+</joint>
+
+</robot>
+
+
+

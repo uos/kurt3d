@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="use_phidgets_imu" default="false" />
+
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find uos_3dscanner)/urdf/kurt3d.urdf.xacro'" />
+
+  <node pkg="robot_state_publisher" type="state_publisher" name="state_publisher" />
+
+
+
+  <include file="$(find kurt_base)/launch/kurt_indoor.launch" />
+
+  <include file="$(find kurt_bringup)/launch/sick_lms200.launch" />
+
+  <include file="$(find kurt_bringup)/launch/ekf.launch">
+    <arg name="use_phidgets_imu" value="$(arg use_phidgets_imu)" />
+  </include>
+
+ <node pkg="uos_3dscanner" type="laserscanner_node" name="laserscanner_node" />
+ <node pkg="pololu_driver" type="servo_node" name="servo_node" />
+
+  <node type="laser_scan_assembler" pkg="laser_assembler" name="scan_assembler">
+  <remap from="scan" to="cleaned_scan" />
+    <param name="max_scans" type="int" value="5000" />
+    <param name="fixed_frame" type="string" value="base_link" />
+  </node>
+
+</launch>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<robot
+  xmlns:xacro="http://ros.org/wiki/xacro"
+  name="kurt3d">
+
+  <xacro:include filename="$(find kurt_base)/urdf/kurt_indoor.urdf.xacro" />
+  <xacro:include filename="$(find uos_3dscanner)/urdf/kurt3d_top.urdf.xacro" />
+
+</robot>
