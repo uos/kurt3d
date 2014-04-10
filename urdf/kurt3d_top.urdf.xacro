@@ -158,10 +158,447 @@
     <origin rpy="0 -1.57079632679 -1.57079632679" xyz="0.084 -0.027 0.067" />
   </joint>
 
+
+
+
+<!-- LEFTCAM -->
+
+
+
+
+
+    <link name="left_cam">
+        <visual>
+            <geometry>
+                <box size="0.05 0.04 0.005" />
+            </geometry>
+            <material name="grey">
+                <color  rgba="0.7 0.7 0.7 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.05 0.04 0.005" />
+            </geometry>
+        </collision>
+    </link>
+
+<!-- .............................HALTERUNG 1................................-->
+    <link name="halterung_1_a">
+        <visual>
+            <geometry>
+                <box size="0.015 0.006 0.045" />
+            </geometry>
+            <material name="grey">
+                <color  rgba="0.7 0.7 0.7 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.015 0.006 0.045" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_to_halterung_1_a" type="fixed">
+        <parent link="left_cam" />
+        <child link="halterung_1_a" />
+        <origin xyz="0.014 0.017 0.025" />
+    </joint>
+
+<!-- ..............................HALTERUNG 2...............................-->
+    <link name="halterung_1_b">
+        <visual>
+            <geometry>
+                <box size="0.015 0.006 0.045" />
+            </geometry>
+            <material name="grey">
+                <color  rgba="0.7 0.7 0.7 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.015 0.006 0.045" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_to_halterung_1_b" type="fixed">
+        <parent link="left_cam" />
+        <child link="halterung_1_b" />
+        <origin xyz="0.014 -0.017 0.025" />
+    </joint>
+
+<!-- .............................SERVO 1................................-->
+    <link name="servo_1_a">
+        <visual>
+            <geometry>
+                <box size="0.03 0.028 0.013" />
+            </geometry>
+            <material name="blue">
+                <color  rgba="0.118 0.565 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.03 0.028 0.013" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="halterung_1_a_to_servo_1_a" type="fixed">
+        <parent link="halterung_1_a" />
+        <child link="servo_1_a" />
+        <origin xyz="-0.005 -0.017 0.016" />
+    </joint>
+
+<!-- .............................WING 1................................-->
+
+    <link name="wing_1_a">
+        <visual>
+            <geometry>
+                <box size="0.005 0.028 0.007" />
+            </geometry>
+            <material name="grey" />
+            <origin xyz="0 -0.0105 0" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.005 0.028 0.007" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="servo_1_a_to_wing_1_a" type="continuous">
+        <parent link="servo_1_a" />
+        <child link="wing_1_a" />
+        <origin xyz="-0.0175 0.0105 0" />
+    </joint>
+
+<!-- .............................SERVO 2................................-->
+
+    <link name="servo_1_b">
+        <visual>
+            <geometry>
+                <box size="0.024 0.04 0.031" />
+            </geometry>
+            <material name="blue">
+                <color  rgba="0.118 0.565 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.028 0.04 0.031" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="wing_1_a_to_servo_1_b" type="fixed">
+        <parent link="wing_1_a" />
+        <child link="servo_1_b" />
+        <origin xyz="-0.014 -0.0105 -0.007" />
+    </joint>
+
+<!-- .............................WING 2................................-->
+
+    <link name="wing_1_b">
+        <visual>
+            <geometry>
+                <box size="0.018 0.007 0.005" />
+            </geometry>
+             <material name="grey" />
+            <origin xyz="0.005 0 0" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.018 0.007 0.005" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="servo_1_b_to_wing_1_b" type="continuous">
+        <parent link="servo_1_b" />
+        <child link="wing_1_b" />
+        <origin xyz="0 0.01 0.018" />
+        <axis xyz="0 0 1" />
+    </joint>
+
+<!-- .............................CAM 1................................-->
+
+    <link name="cam_1">
+        <visual>
+            <geometry>
+                <sphere radius="0.03"/>
+            </geometry>
+             <material name="grey" />
+            <origin xyz="0 0 0" />
+        </visual>
+        <collision>
+            <geometry>
+                <sphere radius="0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="wing_1_b_to_cam_1" type="fixed">
+        <parent link="wing_1_b" />
+        <child link="cam_1" />
+        <origin xyz="0 0 0.0325" />
+    </joint>
+
+<!-- .............................LED RING 1................................-->
+
+    <link name="led_1">
+        <visual>
+            <geometry>
+                <cylinder radius="0.022" length="0.01"/>
+            </geometry>
+             <material name="grey" />
+            <origin xyz="0 0 0" rpy="1.570796323 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.022" length="0.01"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="cam_1_to_led_1" type="fixed">
+        <parent link="cam_1" />
+        <child link="led_1" />
+        <origin xyz="0 0.03 0" />
+    </joint>
+
+
+
+
+<!-- RIGHTCAM -->
+
+
+    <link name="right_cam">
+        <visual>
+            <geometry>
+                <box size="0.05 0.04 0.005" />
+            </geometry>
+            <material name="grey">
+                <color  rgba="0.7 0.7 0.7 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.05 0.04 0.005" />
+            </geometry>
+        </collision>
+    </link>
+
+<!-- .............................HALTERUNG 1................................-->
+    <link name="halterung_2_a">
+        <visual>
+            <geometry>
+                <box size="0.015 0.006 0.045" />
+            </geometry>
+            <material name="grey">
+                <color  rgba="0.7 0.7 0.7 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.015 0.006 0.045" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="right_cam_to_halterung_2_a" type="fixed">
+        <parent link="right_cam" />
+        <child link="halterung_2_a" />
+        <origin xyz="0.014 0.017 0.025" />
+    </joint>
+
+<!-- ..............................HALTERUNG 2...............................-->
+    <link name="halterung_2_b">
+        <visual>
+            <geometry>
+                <box size="0.015 0.006 0.045" />
+            </geometry>
+            <material name="grey">
+                <color  rgba="0.7 0.7 0.7 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.015 0.006 0.045" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="right_cam_to_halterung_2_b" type="fixed">
+        <parent link="right_cam" />
+        <child link="halterung_2_b" />
+        <origin xyz="0.014 -0.017 0.025" />
+    </joint>
+
+<!-- .............................SERVO 1................................-->
+    <link name="servo_2_a">
+        <visual>
+            <geometry>
+                <box size="0.03 0.028 0.013" />
+            </geometry>
+            <material name="blue">
+                <color  rgba="0.118 0.565 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.03 0.028 0.013" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="halterung_2_a_to_servo_2_a" type="fixed">
+        <parent link="halterung_2_a" />
+        <child link="servo_2_a" />
+        <origin xyz="-0.005 -0.017 0.016" />
+    </joint>
+
+<!-- .............................WING 1................................-->
+
+    <link name="wing_2_a">
+        <visual>
+            <geometry>
+                <box size="0.005 0.028 0.007" />
+            </geometry>
+            <material name="grey" />
+            <origin xyz="0 -0.0105 0" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.005 0.028 0.007" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="servo_2_a_to_wing_2_a" type="continuous">
+        <parent link="servo_2_a" />
+        <child link="wing_2_a" />
+        <origin xyz="-0.0175 0.0105 0" />
+    </joint>
+
+<!-- .............................SERVO 2................................-->
+
+    <link name="servo_2_b">
+        <visual>
+            <geometry>
+                <box size="0.024 0.04 0.031" />
+            </geometry>
+            <material name="blue">
+                <color  rgba="0.118 0.565 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.028 0.04 0.031" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="wing_2_a_to_servo_2_b" type="fixed">
+        <parent link="wing_2_a" />
+        <child link="servo_2_b" />
+        <origin xyz="-0.014 -0.0105 -0.007" />
+    </joint>
+
+<!-- .............................WING 2................................-->
+
+    <link name="wing_2_b">
+        <visual>
+            <geometry>
+                <box size="0.018 0.007 0.005" />
+            </geometry>
+             <material name="grey" />
+            <origin xyz="0.005 0 0" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.018 0.007 0.005" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="servo_2_b_to_wing_2_b" type="continuous">
+        <parent link="servo_2_b" />
+        <child link="wing_2_b" />
+        <origin xyz="0 0.01 0.018" />
+        <axis xyz="0 0 1" />
+    </joint>
+
+<!-- .............................CAM 2................................-->
+
+    <link name="cam_2">
+        <visual>
+            <geometry>
+                <sphere radius="0.03"/>
+            </geometry>
+             <material name="grey" />
+            <origin xyz="0 0 0"  />
+        </visual>
+        <collision>
+            <geometry>
+                <sphere radius="0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="wing_2_b_to_cam_2" type="fixed">
+        <parent link="wing_2_b" />
+        <child link="cam_2" />
+        <origin xyz="0 0 0.0325" rpy="0 0 3.14159265359"/>
+    </joint>
+
+<!-- .............................LED RING 2................................-->
+
+    <link name="led_2">
+        <visual>
+            <geometry>
+                <cylinder radius="0.022" length="0.01"/>
+            </geometry>
+             <material name="grey" />
+            <origin xyz="0 0 0" rpy="1.570796323 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.022" length="0.01"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="cam_2_to_led_2" type="fixed">
+        <parent link="cam_2" />
+        <child link="led_2" />
+        <origin xyz="0 0.03 0" />
+    </joint>
+
+<!-- |||||||||||||||||||||||||||||||JOINTS|||||||||||||||||||||||||||||||||||||||||| -->
+
+ <!-- LEFTCAM TO BASE -->
+
+<joint name="left_cam_to_base" type="fixed" >
+    <parent link="base_link" />
+    <child link="left_cam" />
+    <origin xyz="0.16 0.136 0.0325" rpy="0 0 -1.57079632679" />
+</joint>
+
+ <!-- RIGHTCAM TO BASE -->
+
+<joint name="right_cam_to_base" type="fixed" >
+    <parent link="base_link" />
+    <child link="right_cam" />
+    <origin xyz="0.16 -0.136 0.0325" rpy="0 0 1.57079632679" />
+</joint>
+
 <!--   TOP TO BASE -->
 
 
-<joint name="base_to_top" type="fixed">
+<joint name="sockel_to_base" type="fixed">
     <parent link="base_link" />
     <child link="laser_sockel" />
     <origin xyz="0.14 0 0.035" rpy="0 0 1.57079632679" />
