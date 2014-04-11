@@ -1,0 +1,28 @@
+This package contains the required nodes and launchfiles to fire up the KURT3D robot with a 3D Laserscan capabilities.
+
+It provides functionality to control the five servo motors via the pololu micro usb controller card 
+and make us of it to take and assemble laser scans with a sick lms200 laser scan unit.
+
+servos can be controlled via
+    servo_node service calls
+    servo_control topic 
+
+a laserscan can be requested via the
+
+    laserscanner_node service call 
+
+the point clouds will be published on topic
+
+    /uos_3dscans
+
+
+You will probably want to have several other packages around for integrated usage:
+
+- uos_slam 
+    This package allows you to dump the taken laserscans to the hard drive (do not forget to remap the point2_in topic to uos_3dscans) 
+
+- uos_diffdrive_teleop
+    This package allows to control the robot via ps3 bluetooth controller. Use L1 / R1 with the right joystick to control the camera servos.
+    Use triangle button to initiate a laserscan.
+
+
