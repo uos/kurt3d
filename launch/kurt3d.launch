@@ -17,7 +17,7 @@
   </include>
 
  <node pkg="uos_3dscanner" type="laserscanner_node" name="laserscanner_node" />
- <node pkg="pololu_driver" type="servo_node" name="servo_node" />
+ <node pkg="uos_3dscanner" type="servo_node" name="servo_node" />
 
   <node type="laser_scan_assembler" pkg="laser_assembler" name="scan_assembler">
   <remap from="scan" to="cleaned_scan" />

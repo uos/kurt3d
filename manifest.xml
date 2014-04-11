@@ -9,7 +9,6 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/uos_3dscanner</url>
   <depend package="roscpp"/>
-  <depend package="pololu_driver"/>
   <depend package="uos_common_urdf"/>
 
 </package>

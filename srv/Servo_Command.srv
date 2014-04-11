@@ -1,0 +1,5 @@
+int8 channel
+float32 angle
+int16 speed
+---
+bool finished
