@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "uos_3dscanner/Servo_Command.h"
+#include "uos_3dscanner/ServoCommand.h"
 #include "std_msgs/String.h"
 #include "sensor_msgs/JointState.h"
 #include "uos_3dscanner/servo_control.h"
@@ -122,8 +122,8 @@ void servoCallback(const uos_3dscanner::servo_control::ConstPtr& req)
 }
 
 
-bool nod(uos_3dscanner::Servo_Command::Request  &req,
-         uos_3dscanner::Servo_Command::Response &res)
+bool nod(uos_3dscanner::ServoCommand::Request  &req,
+         uos_3dscanner::ServoCommand::Response &res)
 {
   ROS_INFO("A servo movement was requested by service");
   ROS_INFO("Channel: [%i] Target: [%f] Speed: [%i]",req.channel,req.angle,req.speed);

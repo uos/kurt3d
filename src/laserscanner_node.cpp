@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "uos_3dscanner/Servo_Command.h"
+#include "uos_3dscanner/ServoCommand.h"
 #include "uos_3dscanner/Scan.h"
 #include "sensor_msgs/LaserScan.h"
 #include "laser_assembler/AssembleScans2.h"
@@ -34,7 +34,7 @@ bool scan(uos_3dscanner::Scan::Request  &req,
          uos_3dscanner::Scan::Response &res)
 {
     std::cout << "Min Pos" << std::endl;
-    uos_3dscanner::Servo_Command srv;
+    uos_3dscanner::ServoCommand srv;
 
     srv.request.channel = 0;
     srv.request.angle = MIN_POS;
@@ -55,7 +55,7 @@ bool scan(uos_3dscanner::Scan::Request  &req,
 
     for(int i = 0; i < RANGE; i++)
     {
-        uos_3dscanner::Servo_Command srv;
+        uos_3dscanner::ServoCommand srv;
         float angle;
 
         angle = MIN_POS+ (float)i/ (float)RANGE * (MAX_POS-MIN_POS);
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 
   ros::NodeHandle n;
 
-  client = n.serviceClient<uos_3dscanner::Servo_Command>("servo_node");
+  client = n.serviceClient<uos_3dscanner::ServoCommand>("servo_node");
   pointCloudClient = n.serviceClient<laser_assembler::AssembleScans2>("assemble_scans2");
 
   // inits the publisher
