@@ -10,7 +10,9 @@
 
   <include file="$(find kurt_base)/launch/kurt_indoor.launch" />
 
-  <include file="$(find kurt_bringup)/launch/sick_lms200.launch" />
+  <include file="$(find kurt_bringup)/launch/sick_lms200.launch">
+    <param name="resolution" value="0.5" />
+  </include>
 
   <include file="$(find kurt_bringup)/launch/ekf.launch">
     <arg name="use_phidgets_imu" value="$(arg use_phidgets_imu)" />
