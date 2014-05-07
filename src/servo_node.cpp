@@ -2,7 +2,7 @@
 #include "uos_3dscanner/ServoCommand.h"
 #include "std_msgs/String.h"
 #include "sensor_msgs/JointState.h"
-#include "uos_3dscanner/servo_control.h"
+#include "uos_3dscanner/ServoControl.h"
 #include <sstream>
 #include "USBInterface.h"
 #include "clock.h"
@@ -97,7 +97,7 @@ void moveServo(int channel, double angle, int speed, bool secure)
 }
 
 
-void servoCallback(const uos_3dscanner::servo_control::ConstPtr& req)
+void servoCallback(const uos_3dscanner::ServoControl::ConstPtr& req)
 {
      ROS_INFO("A servo movement was requested by topic");
      ROS_INFO("Channel: [%i] Target: [%f] Speed: [%i]",req->channel,req->angle,req->speed);
