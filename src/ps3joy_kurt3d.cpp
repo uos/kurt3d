@@ -38,7 +38,6 @@
 double max_vel_x, max_rotational_vel;
 ros::Publisher vel_pub;
 double speed_multiplier;
-static bool blocked = false;
 static ros::ServiceClient client;
 ros::Publisher servo_pub;
 
