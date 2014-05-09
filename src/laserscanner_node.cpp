@@ -27,11 +27,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ros/ros.h"
+#include <ros/ros.h>
 #include "uos_3dscanner/ServoCommand.h"
 #include "uos_3dscanner/Scan.h"
-#include "sensor_msgs/LaserScan.h"
-#include "laser_assembler/AssembleScans2.h"
+#include <sensor_msgs/LaserScan.h>
+#include <laser_assembler/AssembleScans2.h>
 #include <cstdlib>
 #define _USE_MATH_DEFINES
 

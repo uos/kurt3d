@@ -27,14 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ros/ros.h"
+#include <ros/ros.h>
 #include "uos_3dscanner/ServoCommand.h"
-#include "std_msgs/String.h"
-#include "sensor_msgs/JointState.h"
+#include <sensor_msgs/JointState.h>
 #include "uos_3dscanner/ServoControl.h"
 #include <sstream>
 #include "USBInterface.h"
-#include "clock.h"
 #include <iostream>
 #include <boost/thread.hpp>
 #define _USE_MATH_DEFINES
