@@ -31,7 +31,7 @@
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Joy.h>
 #include "kurt3d/Scan.h"
-#include "pololu_driver/servo_control.h"
+#include <sensor_msgs/JointState.h>
 
 #define RAD(GRAD) ((GRAD * (float)M_PI) / (float)180)
 
@@ -100,52 +100,33 @@ void ps3joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
   }
   if(joy->buttons[10])
   {
-    int channel_1 = 2;
-    int channel_2 = 1;
+    sensor_msgs::JointState msg;
+    msg.name.resize(2);
+    msg.position.resize(2);
+    msg.velocity.resize(2);
+    msg.effort.resize(2);
+    msg.name[0] = "servo_1_b_to_wing_1_b";
+    msg.name[1] = "servo_1_a_to_wing_1_a";
 
-    pololu_driver::servo_control msg_x;
-    pololu_driver::servo_control msg_z;
+    msg.position[0] = (((joy->axes[2]*-1.0+1.0) / 2.0) * (max_pos[2]-min_pos[2])) + min_pos[2];
+    msg.position[1] = (((joy->axes[3]*-1.0+1.0) / 2.0) * (max_pos[1]-min_pos[1])) + min_pos[1];
 
-    double angle_x = (((joy->axes[2]*-1.0+1.0) / 2.0) * (max_pos[channel_1]-min_pos[channel_1])) + min_pos[channel_1];
-    double angle_z = (((joy->axes[3]*-1.0+1.0) / 2.0) * (max_pos[channel_2]-min_pos[channel_2])) + min_pos[channel_2];
-
-    msg_x.channel = channel_1;
-    msg_x.angle =  angle_x;
-    msg_x.speed = 0;
-
-    msg_z.channel = channel_2;
-    msg_z.angle =  angle_z;
-    msg_z.speed = 0;
-
-
-    servo_pub.publish(msg_x);
-    servo_pub.publish(msg_z);
+    servo_pub.publish(msg);
   }
   if(joy->buttons[11])
   {
-    int channel_1 = 4;
-    int channel_2 = 3;
+    sensor_msgs::JointState msg;
+    msg.name.resize(2);
+    msg.position.resize(2);
+    msg.velocity.resize(2);
+    msg.effort.resize(2);
+    msg.name[0] = "servo_2_b_to_wing_2_b";
+    msg.name[1] = "servo_2_a_to_wing_2_a";
 
+    msg.position[0] = (((joy->axes[2]*-1+1.0) / 2.0) * (max_pos[4]-min_pos[4])) + min_pos[4];
+    msg.position[1] = (((joy->axes[3]+1.0) / 2.0) * (max_pos[3]-min_pos[3])) + min_pos[3];
 
-    pololu_driver::servo_control msg_x;
-    pololu_driver::servo_control msg_z;
-
-    double angle_x = (((joy->axes[2]*-1+1.0) / 2.0) * (max_pos[channel_1]-min_pos[channel_1])) + min_pos[channel_1];
-    double angle_z = (((joy->axes[3]+1.0) / 2.0) * (max_pos[channel_2]-min_pos[channel_2])) + min_pos[channel_2];
-
-
-    msg_x.channel = channel_1;
-    msg_x.angle =  angle_x;
-    msg_x.speed = 0;
-
-    msg_z.channel = channel_2;
-    msg_z.angle =  angle_z;
-    msg_z.speed = 0;
-
-
-    servo_pub.publish(msg_x);
-    servo_pub.publish(msg_z);
-
+    servo_pub.publish(msg);
   }
   else  // use left analog stick
   {
@@ -170,7 +151,7 @@ int main(int argc, char** argv)
 
   client = nh.serviceClient<kurt3d::Scan>("laserscanner_node");
 
-  servo_pub = nh.advertise<pololu_driver::servo_control>("servo_control", 4);
+  servo_pub = nh.advertise<sensor_msgs::JointState>("servo_control", 1);
 
   ros::spin();
 }

@@ -1,5 +1,3 @@
-int8 channel
-float32 angle
-int16 speed
+sensor_msgs/JointState joint_goal
 ---
 bool finished

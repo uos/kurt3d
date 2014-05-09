@@ -65,9 +65,13 @@ bool scan(kurt3d::Scan::Request  &req,
     std::cout << "Min Pos" << std::endl;
     kurt3d::ServoCommand srv;
 
-    srv.request.channel = 0;
-    srv.request.angle = MIN_POS;
-    srv.request.speed = 15;
+    srv.request.joint_goal.name.resize(1);
+    srv.request.joint_goal.position.resize(1);
+    srv.request.joint_goal.velocity.resize(1);
+    srv.request.joint_goal.effort.resize(1);
+    srv.request.joint_goal.name[0] = "drehobjekt_1_to_balken_1";
+    srv.request.joint_goal.position[0] = MIN_POS;
+    srv.request.joint_goal.velocity[0] = 1.5;
 
     if (client.call(srv))
     {
@@ -85,7 +89,6 @@ bool scan(kurt3d::Scan::Request  &req,
 
     for(int i = 0; i < RANGE && ros::ok(); i++)
     {
-        kurt3d::ServoCommand srv;
         float angle;
 
         angle = MIN_POS+ (float)i/ (float)RANGE * (MAX_POS-MIN_POS);
@@ -94,9 +97,8 @@ bool scan(kurt3d::Scan::Request  &req,
 
         std::cout << "Angle: " << angle << std::endl;
 
-        srv.request.channel = 0;
-        srv.request.angle = (angle);
-        srv.request.speed = 5;
+        srv.request.joint_goal.position[0] = angle;
+        srv.request.joint_goal.velocity[0] = 0.5;
 
         if (client.call(srv))
         {
@@ -140,9 +142,8 @@ bool scan(kurt3d::Scan::Request  &req,
     }
 
 
-    srv.request.channel = 0;
-    srv.request.angle = STANDBY_POS;
-    srv.request.speed = 10;
+    srv.request.joint_goal.position[0] = STANDBY_POS;
+    srv.request.joint_goal.velocity[0] = 1.0;
 
     if (client.call(srv))
     {

@@ -30,7 +30,6 @@
 #include <ros/ros.h>
 #include "kurt3d/ServoCommand.h"
 #include <sensor_msgs/JointState.h>
-#include "kurt3d/ServoControl.h"
 #include <sstream>
 #include "USBInterface.h"
 #include <iostream>
@@ -81,13 +80,10 @@ void setJointState(int channel, double angle)
 {
     currentState.header.stamp = ros::Time::now();
 
-
-    if(channel == 2 || channel == 4|| channel == 0) angle *= -1.0;
-
     currentState.position[channel] = angle;
 }
 
-void moveServo(int channel, double angle, int speed, bool secure)
+void moveServo(const sensor_msgs::JointState& req, bool secure)
 {
     boost::lock_guard<boost::mutex> _(mut());
 
@@ -96,27 +92,59 @@ void moveServo(int channel, double angle, int speed, bool secure)
     uscSettings settings;
     usb.setUscSettings(settings);
 
-    usb.setSpeed(channel, speed);
-
-    double target = (double)angle;
-    target -= min_pos[channel];
-
-    target /=  (max_pos[channel] - min_pos[channel]);
-
-    target *= SERVO_RANGE;
-
-    target += SERVO_MIN;
-
-    if(secure)
+    for(size_t i = 0; i < req.name.size(); i++)
     {
-        usb.moveToTarget(channel, target);
+      ROS_INFO("Channel: [%s] Target: [%f] Speed: [%f]",req.name[i].c_str(),req.position[i],req.velocity[i]);
+      int channel;
+      for(channel = 0; channel < 5; channel++)
+        if(req.name[i] == jointNames[channel])
+          break;
+
+      if(channel == 5)
+        continue;
+
+      double angle = req.position[i];
+
+      if(angle < min_pos[channel])
+      {
+          ROS_INFO("Required Angle out of range!");
+          angle = min_pos[channel];
+      }
+
+      else if(angle > max_pos[channel])
+      {
+          ROS_INFO("Required Angle out of range!");
+          angle = max_pos[channel];
+      }
+
+      // speed not calibrated
+      ushort speed = req.velocity[i] * 10;
+      usb.setSpeed(channel, speed);
+
+      double target = angle;
+
+      // Flip rotation of servo
+      if(channel == 2 || channel == 4|| channel == 0) target *= -1.0;
+
+      target -= min_pos[channel];
+
+      target /=  (max_pos[channel] - min_pos[channel]);
+
+      target *= SERVO_RANGE;
+
+      target += SERVO_MIN;
+
+      if(secure)
+      {
+          usb.moveToTarget(channel, target);
+      }
+      else
+      {
+          usb.setTarget(channel, target);
+      }
+      // As the board position information seems biased we just assume the requested angle was reached.
+      setJointState(channel, angle);
     }
-    else
-    {
-        usb.setTarget(channel, target);
-    }
-    // As the board position information seems biased we just assume the requested angle was reached.
-    setJointState(channel, angle);
 
     state_pub.publish(currentState);
 
@@ -124,28 +152,10 @@ void moveServo(int channel, double angle, int speed, bool secure)
 }
 
 
-void servoCallback(const kurt3d::ServoControl::ConstPtr& req)
+void servoCallback(const sensor_msgs::JointState::ConstPtr& req)
 {
-     ROS_INFO("A servo movement was requested by topic");
-     ROS_INFO("Channel: [%i] Target: [%f] Speed: [%i]",req->channel,req->angle,req->speed);
-     if(req->channel == 0) return;
-
-     double target = req->angle;
-
-     if(req->angle < min_pos[req->channel])
-     {
-         ROS_INFO("Required Angle out of range!");
-         target = min_pos[req->channel];
-     }
-
-     if(req->angle  > max_pos[req->channel])
-     {
-         ROS_INFO("Required Angle out of range!");
-         target = max_pos[req->channel];
-     }
-
-     moveServo(req->channel, target, req->speed, false);
-
+  ROS_INFO("A servo movement was requested by topic");
+  moveServo(*req, false);
 }
 
 
@@ -153,24 +163,7 @@ bool nod(kurt3d::ServoCommand::Request  &req,
          kurt3d::ServoCommand::Response &res)
 {
   ROS_INFO("A servo movement was requested by service");
-  ROS_INFO("Channel: [%i] Target: [%f] Speed: [%i]",req.channel,req.angle,req.speed);
-
-
-  double target = req.angle;
-
-  if(req.angle < min_pos[req.channel])
-  {
-      ROS_INFO("Required Angle out of range!");
-      target = min_pos[req.channel];
-  }
-
-  if(req.angle  > max_pos[req.channel])
-  {
-      ROS_INFO("Required Angle out of range!");
-      target = max_pos[req.channel];
-  }
-
-  moveServo(req.channel, target, req.speed, true);
+  moveServo(req.joint_goal, true);
 
   res.finished = true;
   return true;
