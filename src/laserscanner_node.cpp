@@ -81,8 +81,9 @@ bool scan(uos_3dscanner::Scan::Request  &req,
 
     laser_assembler::AssembleScans2 assemble_srv;
     assemble_srv.request.begin = ros::Time::now();
+    ros::Rate loop_rate(150);
 
-    for(int i = 0; i < RANGE; i++)
+    for(int i = 0; i < RANGE && ros::ok(); i++)
     {
         uos_3dscanner::ServoCommand srv;
         float angle;
@@ -101,9 +102,10 @@ bool scan(uos_3dscanner::Scan::Request  &req,
         {
           ROS_INFO("Movement finished");
 
-          while(lastPublishedScan.header.seq == currentScan.header.seq || lastPublishedScan.header.seq == lastScan.header.seq)
+          while(ros::ok() && (lastPublishedScan.header.seq == currentScan.header.seq || lastPublishedScan.header.seq == lastScan.header.seq))
           {
               ros::spinOnce();
+              loop_rate.sleep();
           }
 
           laser_pub.publish(lastScan);
