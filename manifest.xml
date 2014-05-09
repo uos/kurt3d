@@ -4,13 +4,19 @@
      uos_3dscanner
 
   </description>
-  <author>bekisliuk</author>
+  <author>Thomas Wiemann, Benjamin Kisliuk, Alexander Mock</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/uos_3dscanner</url>
   <depend package="roscpp"/>
   <depend package="uos_common_urdf"/>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="kurt_base"/>
+  <depend package="kurt_bringup"/>
+  <depend package="laser_assembler"/>
 
+  <rosdep name="libusb-1.0-dev" />
 </package>
 
 
