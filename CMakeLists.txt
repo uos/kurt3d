@@ -15,20 +15,15 @@ rosbuild_init()
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+
 # Set module path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/")
 message(STATUS "Module Path: ${CMAKE_MODULE_PATH}")
-
-
+list( APPEND ROS_COMPILE_FLAGS "-std=c++0x")
 
 # Include libusb1
 find_package(libusb-1.0 REQUIRED)
 include_directories(${LIBUSB_1_INCLUDE_DIRS})
-
-# Setup configurations
-set( CMAKE_CXX_FLAGS         "-O3 -g -std=gnu++0x ")
-set( CMAKE_CXX_FLAGS_RELEASE "-O3 -msse3 -Wno-deprecated-declarations -Wno-unused -Wcpp -std=gnu++0x " )
-set( CMAKE_CXX_FLAGS_DEBUG   "-g -Wall -std=gnu++0x " )
 
 #uncomment if you have defined messages
 rosbuild_genmsg()
