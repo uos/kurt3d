@@ -108,7 +108,7 @@ void ps3joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
     msg.name[0] = "servo_1_b_to_wing_1_b";
     msg.name[1] = "servo_1_a_to_wing_1_a";
 
-    msg.position[0] = (((joy->axes[2]*-1.0+1.0) / 2.0) * (max_pos[2]-min_pos[2])) + min_pos[2];
+    msg.position[0] = (((joy->axes[2]+1.0) / 2.0) * (max_pos[2]-min_pos[2])) + min_pos[2];
     msg.position[1] = (((joy->axes[3]*-1.0+1.0) / 2.0) * (max_pos[1]-min_pos[1])) + min_pos[1];
 
     servo_pub.publish(msg);
@@ -123,7 +123,7 @@ void ps3joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
     msg.name[0] = "servo_2_b_to_wing_2_b";
     msg.name[1] = "servo_2_a_to_wing_2_a";
 
-    msg.position[0] = (((joy->axes[2]*-1+1.0) / 2.0) * (max_pos[4]-min_pos[4])) + min_pos[4];
+    msg.position[0] = (((joy->axes[2]+1.0) / 2.0) * (max_pos[4]-min_pos[4])) + min_pos[4];
     msg.position[1] = (((joy->axes[3]+1.0) / 2.0) * (max_pos[3]-min_pos[3])) + min_pos[3];
 
     servo_pub.publish(msg);

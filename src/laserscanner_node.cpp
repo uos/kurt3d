@@ -36,9 +36,9 @@
 #define _USE_MATH_DEFINES
 
 
-#define MIN_POS ((-50.0 * (float)M_PI) / 180.0)
-#define STANDBY_POS ((-20.0 * (float)M_PI) / 180.0)
-#define MAX_POS ((60.0 * (float)M_PI) / 180.0)
+#define MIN_POS ((50.0 * (float)M_PI) / 180.0)
+#define STANDBY_POS ((20.0 * (float)M_PI) / 180.0)
+#define MAX_POS ((-60.0 * (float)M_PI) / 180.0)
 #define RANGE 1000
 
 static ros::ServiceClient client;
