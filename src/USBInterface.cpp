@@ -76,7 +76,7 @@ USBPololuInterface::USBPololuInterface(uint16_t v_id, uint16_t p_id)
     }
 
     // Try to open device
-    int ret;
+    int ret = -1;
     if(m_device)
     {
         ret = libusb_open(m_device, &m_deviceHandle);
@@ -241,7 +241,6 @@ void USBPololuInterface::setUscSettings(uscSettings settings)
 
     uint8_t ioMask = 0;
     uint8_t outputMask = 0;
-    uint8_t* channelModeBytes = new uint8_t[6]{0,0,0,0,0,0};
 
     std::list<channelSetting>::iterator it;
 
