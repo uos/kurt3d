@@ -4,6 +4,6 @@
   name="kurt3d">
 
   <xacro:include filename="$(find kurt_base)/urdf/kurt_indoor.urdf.xacro" />
-  <xacro:include filename="$(find uos_3dscanner)/urdf/kurt3d_top.urdf.xacro" />
+  <xacro:include filename="$(find kurt3d)/urdf/kurt3d_top.urdf.xacro" />
 
 </robot>

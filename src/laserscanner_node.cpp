@@ -28,8 +28,8 @@
  */
 
 #include <ros/ros.h>
-#include "uos_3dscanner/ServoCommand.h"
-#include "uos_3dscanner/Scan.h"
+#include "kurt3d/ServoCommand.h"
+#include "kurt3d/Scan.h"
 #include <sensor_msgs/LaserScan.h>
 #include <laser_assembler/AssembleScans2.h>
 #include <cstdlib>
@@ -59,11 +59,11 @@ void scanCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
 }
 
 
-bool scan(uos_3dscanner::Scan::Request  &req,
-         uos_3dscanner::Scan::Response &res)
+bool scan(kurt3d::Scan::Request  &req,
+         kurt3d::Scan::Response &res)
 {
     std::cout << "Min Pos" << std::endl;
-    uos_3dscanner::ServoCommand srv;
+    kurt3d::ServoCommand srv;
 
     srv.request.channel = 0;
     srv.request.angle = MIN_POS;
@@ -85,7 +85,7 @@ bool scan(uos_3dscanner::Scan::Request  &req,
 
     for(int i = 0; i < RANGE && ros::ok(); i++)
     {
-        uos_3dscanner::ServoCommand srv;
+        kurt3d::ServoCommand srv;
         float angle;
 
         angle = MIN_POS+ (float)i/ (float)RANGE * (MAX_POS-MIN_POS);
@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 
   ros::NodeHandle n;
 
-  client = n.serviceClient<uos_3dscanner::ServoCommand>("servo_node");
+  client = n.serviceClient<kurt3d::ServoCommand>("servo_node");
   pointCloudClient = n.serviceClient<laser_assembler::AssembleScans2>("assemble_scans2");
 
   // inits the publisher

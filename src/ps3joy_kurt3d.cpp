@@ -30,7 +30,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Joy.h>
-#include "uos_3dscanner/Scan.h"
+#include "kurt3d/Scan.h"
 #include "pololu_driver/servo_control.h"
 
 #define RAD(GRAD) ((GRAD * (float)M_PI) / (float)180)
@@ -86,7 +86,7 @@ void ps3joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
   // check if triangle is used for laser scanning
   if (joy->buttons[12])
   {
-     uos_3dscanner::Scan srv;
+     kurt3d::Scan srv;
 
      if (client.call(srv))
      {
@@ -168,7 +168,7 @@ int main(int argc, char** argv)
   vel_pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
   ros::Subscriber ps3joy_sub = nh.subscribe("joy", 10, ps3joyCallback);
 
-  client = nh.serviceClient<uos_3dscanner::Scan>("laserscanner_node");
+  client = nh.serviceClient<kurt3d::Scan>("laserscanner_node");
 
   servo_pub = nh.advertise<pololu_driver::servo_control>("servo_control", 4);
 

@@ -2,7 +2,7 @@
 <launch>
   <arg name="use_phidgets_imu" default="false" />
 
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find uos_3dscanner)/urdf/kurt3d.urdf.xacro'" />
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find kurt3d)/urdf/kurt3d.urdf.xacro'" />
 
   <node pkg="robot_state_publisher" type="state_publisher" name="state_publisher" />
 
@@ -18,8 +18,8 @@
     <arg name="use_phidgets_imu" value="$(arg use_phidgets_imu)" />
   </include>
 
- <node pkg="uos_3dscanner" type="laserscanner_node" name="laserscanner_node" />
- <node pkg="uos_3dscanner" type="servo_node" name="servo_node" />
+ <node pkg="kurt3d" type="laserscanner_node" name="laserscanner_node" />
+ <node pkg="kurt3d" type="servo_node" name="servo_node" />
 
   <node type="laser_scan_assembler" pkg="laser_assembler" name="scan_assembler">
   <remap from="scan" to="cleaned_scan" />

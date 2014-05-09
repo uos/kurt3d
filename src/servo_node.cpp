@@ -28,9 +28,9 @@
  */
 
 #include <ros/ros.h>
-#include "uos_3dscanner/ServoCommand.h"
+#include "kurt3d/ServoCommand.h"
 #include <sensor_msgs/JointState.h>
-#include "uos_3dscanner/ServoControl.h"
+#include "kurt3d/ServoControl.h"
 #include <sstream>
 #include "USBInterface.h"
 #include <iostream>
@@ -124,7 +124,7 @@ void moveServo(int channel, double angle, int speed, bool secure)
 }
 
 
-void servoCallback(const uos_3dscanner::ServoControl::ConstPtr& req)
+void servoCallback(const kurt3d::ServoControl::ConstPtr& req)
 {
      ROS_INFO("A servo movement was requested by topic");
      ROS_INFO("Channel: [%i] Target: [%f] Speed: [%i]",req->channel,req->angle,req->speed);
@@ -149,8 +149,8 @@ void servoCallback(const uos_3dscanner::ServoControl::ConstPtr& req)
 }
 
 
-bool nod(uos_3dscanner::ServoCommand::Request  &req,
-         uos_3dscanner::ServoCommand::Response &res)
+bool nod(kurt3d::ServoCommand::Request  &req,
+         kurt3d::ServoCommand::Response &res)
 {
   ROS_INFO("A servo movement was requested by service");
   ROS_INFO("Channel: [%i] Target: [%f] Speed: [%i]",req.channel,req.angle,req.speed);

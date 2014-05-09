@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-  <param name="robot_description" command="cat '$(find uos_3dscanner)/urdf/3d_scanner.urdf'" />
+  <param name="robot_description" command="cat '$(find kurt3d)/urdf/3d_scanner.urdf'" />
 
   <node pkg="robot_state_publisher" type="state_publisher" name="state_publisher" />
-  <node pkg="uos_3dscanner" type="laserscanner_node" name="laserscanner_node" />
-  <node pkg="uos_3dscanner" type="servo_node" name="servo_node" />
+  <node pkg="kurt3d" type="laserscanner_node" name="laserscanner_node" />
+  <node pkg="kurt3d" type="servo_node" name="servo_node" />
 
 
 

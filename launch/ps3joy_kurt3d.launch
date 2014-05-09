@@ -6,5 +6,5 @@
     <param name="dev" value="/dev/input/js0" />
   </node>
 
-  <node pkg="uos_3dscanner" type="ps3joy_kurt3d" name="ps3joy_kurt3d" output="screen" />
+  <node pkg="kurt3d" type="ps3joy_kurt3d" name="ps3joy_kurt3d" output="screen" />
 </launch>
