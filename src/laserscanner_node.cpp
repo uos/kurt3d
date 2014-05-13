@@ -164,12 +164,16 @@ bool scan(kurt3d::Scan::Request  &req,
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "laserscanner_server");
+  ros::init(argc, argv, "laserscanner_node");
 
 
   ros::NodeHandle n;
 
   client = n.serviceClient<kurt3d::ServoCommand>("servo_node");
+
+  ROS_INFO("Waiting for [assemble_scans2] to be advertised");
+  ros::service::waitForService("assemble_scans2");
+  ROS_INFO("Found assemble_scans2! Starting the laserscanner_node");
   pointCloudClient = n.serviceClient<laser_assembler::AssembleScans2>("assemble_scans2");
 
   // inits the publisher

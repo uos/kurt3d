@@ -149,6 +149,9 @@ int main(int argc, char** argv)
   vel_pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
   ros::Subscriber ps3joy_sub = nh.subscribe("joy", 10, ps3joyCallback);
 
+  ROS_INFO("Waiting for [laserscanner_node] to be advertised");
+  ros::service::waitForService("assemble_scans2");
+  ROS_INFO("Found laserscanner_node! Starting the ps3joy_kurt3d");
   client = nh.serviceClient<kurt3d::Scan>("laserscanner_node");
 
   servo_pub = nh.advertise<sensor_msgs::JointState>("servo_control", 1);
