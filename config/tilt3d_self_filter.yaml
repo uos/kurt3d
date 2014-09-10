@@ -1,0 +1,27 @@
+min_sensor_dist: .10
+
+self_see_default_padding: .02
+
+self_see_links:
+  - name: balken_2
+  - name: cam_1
+  - name: led_1
+  - name: wing_1_a
+  - name: wing_1_b
+  - name: servo_1_a
+  - name: servo_1_b
+  - name: halterung_1_a
+  - name: halterung_1_b
+  - name: left_cam
+  - name: balken_1
+  - name: cam_2
+  - name: led_2
+  - name: wing_2_a
+  - name: wing_2_b
+  - name: servo_2_a
+  - name: servo_2_b
+  - name: halterung_2_a
+  - name: halterung_2_b
+  - name: right_cam
+  - name: laser_sockel
+  - name: base_link

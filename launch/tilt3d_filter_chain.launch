@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="cloud_frame" default="/base_link"/>
+
+  <!-- filter laser scan for shadow points and convert to point cloud -->
+  <node pkg="laser_filters" type="scan_to_cloud_filter_chain" name="tilt3d_scanner_to_cloud_filter" output="screen">
+    <remap from="scan" to="cleaned_scan" />
+    <remap from="cloud_filtered" to="tilt3d_cloud_filtered" />
+    <param name="target_frame" value="$(arg cloud_frame)" />
+    <param name="high_fidelity" value="true" />
+    <rosparam command="load" file="$(find kurt3d)/config/tilt3d_laser_filter.yaml"/>
+  </node>
+
+  <!-- self filter for the point cloud with the urdf model of the robot -->
+  <node pkg="robot_self_filter" type="self_filter" name="self_filter" output="screen">
+    <remap from="cloud_in" to="tilt3d_cloud_filtered" />
+    <remap from="cloud_out" to="tilt3d_cloud_self_filtered" />
+    <param name="sensor_frame" value="laser" />
+    <rosparam command="load" file="$(find kurt3d)/config/tilt3d_self_filter.yaml" />
+  </node>
+
+  <!-- assembler for filtered point clouds, provides assemble_scans service -->
+  <node type="point_cloud2_assembler" pkg="laser_assembler" name="tilt3d_cloud_assembler" output="screen">
+    <remap from="cloud" to="tilt3d_cloud_self_filtered" />
+    <param name="max_clouds" type="int" value="5000" />
+    <param name="fixed_frame" type="string" value="$(arg cloud_frame)" />
+  </node>
+
+</launch>
