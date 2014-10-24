@@ -42,6 +42,8 @@
 #include <string>
 #include <cmath>
 #include <cstdint>
+#include <unistd.h>
+
 using std::string;
 using std::fabs;
 
