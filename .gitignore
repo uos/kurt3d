@@ -8,3 +8,6 @@ lib/
 msg_gen/
 srv_gen/
 *.pyc
+src/*/msg
+src/*/srv
+src/kurt3d/__init__.py
