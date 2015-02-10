@@ -15,6 +15,7 @@
   <depend package="kurt_base"/>
   <depend package="kurt_bringup"/>
   <depend package="laser_assembler"/>
+  <depend package="robot_self_filter"/>
 
   <rosdep name="libusb-1.0-dev" />
 </package>
