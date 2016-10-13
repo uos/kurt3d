@@ -1,44 +1,65 @@
 cmake_minimum_required(VERSION 2.4.6)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+project(kurt3d)
 
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  std_msgs
+  geometry_msgs
+  laser_geometry
+  message_generation
+  sensor_msgs
+)
+
+# Generate services in the 'srv' folder
+ add_service_files(
+   FILES
+   ServoCommand.srv
+   Scan.srv
+ )
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+  sensor_msgs
+)
+
+catkin_package(
+  DEPENDS 
+)
+
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
 
 #set the default path for built executables to the "bin" directory
-#set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+
 #set the default path for built libraries to the "lib" directory
-#set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 # Set module path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/")
-message(STATUS "Module Path: ${CMAKE_MODULE_PATH}")
-list( APPEND ROS_COMPILE_FLAGS "-std=c++0x")
+set(CMAKE_CXX_FLAGS "-std=c++11" ${CMAKE_CXX_FLAGS})
 
 # Include libusb1
 find_package(libusb-1.0 REQUIRED)
 include_directories(${LIBUSB_1_INCLUDE_DIRS})
 
-#uncomment if you have defined messages
-#rosbuild_genmsg()
-#uncomment if you have defined services
-generate_messages()
-
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
 add_executable(laserscanner_node src/laserscanner_node.cpp)
 add_executable(servo_node src/USBInterface.cpp src/servo_node.cpp)
 add_executable(ps3joy_kurt3d src/ps3joy_kurt3d.cpp)
 
-#target_link_libraries(example ${PROJECT_NAME})
+add_dependencies(laserscanner_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(servo_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ps3joy_kurt3d ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-
-# link executable
+# link executables
 target_link_libraries(servo_node ${LIBUSB_1_LIBRARY})
+
+target_link_libraries(laserscanner_node ${catkin_LIBRARIES})
+target_link_libraries(servo_node ${catkin_LIBRARIES})
+target_link_libraries(ps3joy_kurt3d ${catkin_LIBRARIES})

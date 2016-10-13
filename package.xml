@@ -1,8 +1,8 @@
-<package format="2">
+<package>
   <name>kurt3d</name>
   <version>0.1.1</version>
   <description>This package contains the required nodes and launchfiles to fire up the KURT3D robot with a 3D Laserscan capabilities. It provides functionality to control the five servo motors via the pololu micro usb controller card and make us of it to take and assemble laser scans with a sick lms200 laser scan unit.</description>
-  <maintainer>Thomas Wiemann (twiemann@uos.de)</maintainer>
+  <maintainer email="twiemann@uos.de">Thomas Wiemann</maintainer>
   <author>Thomas Wiemann, Benjamin Kisliuk, Alexander Mock</author>
   <license>BSD</license>
   <url>http://ros.org/wiki/kurt3d</url>
